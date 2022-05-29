@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ssafy.happyhouse.model.mapper.ExpandedMapper">
+
+	<select id="hospitalList" parameterType="String"
+		resultType="HospitalListDto">
+		select hospNo as hospitalNo , yadmNm as hospitalName,telno, lat,lng
+		from hospital
+		where dongCode = #{dongCode}
+	</select>
+
+	<select id="hospitalListRange" parameterType="String"
+		resultType="HospitalListDto">
+		select hospNo as hospitalNo , yadmNm as hospitalName,telno, lat, lng
+		from hospital
+		WHERE LNG BETWEEN #{swLng} AND #{neLng}
+		AND LAT BETWEEN #{swLat} AND #{neLat}
+	</select>
+
+	<select id="schoolListRange" parameterType="String"
+		resultType="SchoolDto">
+		select *
+		from school
+		WHERE LNG BETWEEN #{swLng} AND #{neLng}
+		AND LAT BETWEEN #{swLat} AND #{neLat}
+	</select>
+
+	<select id="BusStationListRange" parameterType="String"
+		resultType="BusStationDto">
+		select *
+		from busstation
+		WHERE LNG BETWEEN #{swLng} AND #{neLng}
+		AND LAT BETWEEN #{swLat} AND #{neLat}
+	</select>
+	
+	<select id="SubwayListRange" parameterType="String"
+		resultType="SubwayDto">
+		select addr,subwayName
+		from subway
+		WHERE LNG BETWEEN #{swLng} AND #{neLng}
+		AND LAT BETWEEN #{swLat} AND #{neLat}
+		
+	</select>
+	
+	<select id="nearSchool" parameterType="String" resultType="NearObj">
+	SELECT schoolNm name, floor(ST_DISTANCE_SPHERE(POINT(#{lng}, #{lat}), fclty_loc)) AS dist
+	FROM school FORCE INDEX FOR JOIN (`school_fclty_loc`)
+	WHERE MBRCONTAINS(ST_LINESTRINGFROMTEXT(<include refid="diagonal"></include>), fclty_loc)
+	ORDER BY dist;
+	</select>
+	<select id="nearHospital" parameterType="String" resultType="NearObj">
+	SELECT yadmNm name, floor(ST_DISTANCE_SPHERE(POINT(#{lng}, #{lat}), fclty_loc)) AS dist
+	FROM hospital FORCE INDEX FOR JOIN (`hospital_fclty_loc`)
+	WHERE MBRCONTAINS(ST_LINESTRINGFROMTEXT(<include refid="diagonal"></include>), fclty_loc)
+	ORDER BY dist;
+	</select>
+	<select id="nearSubway" parameterType="String" resultType="NearObj">
+	SELECT concat(subwayname,' (',linename,')') name, floor(ST_DISTANCE_SPHERE(POINT(#{lng}, #{lat}), fclty_loc)) AS dist
+	FROM subway FORCE INDEX FOR JOIN (`subway_fclty_loc`)
+	WHERE MBRCONTAINS(ST_LINESTRINGFROMTEXT(<include refid="diagonal"></include>), fclty_loc)
+	ORDER BY dist;
+	</select>
+	
+	
+	
+	
+	<sql id="lon_diff"> 2000 / 2 / ST_DISTANCE_SPHERE(POINT(#{lng}, #{lat}), POINT(#{lng} + IF(#{lng} &lt; 0, 1, -1), #{lat}))</sql>
+	<sql id="lat_diff"> 2000 / 2 / ST_DISTANCE_SPHERE(POINT(#{lng}, #{lat}), POINT(#{lng}, #{lat} + IF(#{lat} &lt; 0, 1, -1)))</sql>
+	
+	<sql id="diagonal">CONCAT('LINESTRING(', #{lng} -  IF(#{lng} &lt; 0, 1, -1) * <include refid="lon_diff"></include>, ' ',
+	 #{lat} -  IF(#{lng} &lt; 0, 1, -1) * <include refid="lat_diff"></include>, ',', #{lng} +  IF(#{lng} &lt; 0, 1, -1) * 
+	 <include refid="lon_diff"></include>, ' ', #{lat} +  IF(#{lng} &lt; 0, 1, -1) * <include refid="lat_diff"></include>, ')')</sql>
+
+</mapper>

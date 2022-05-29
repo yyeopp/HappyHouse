@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper	namespace="com.ssafy.happyhouse.model.mapper.NoticeMapper">
+
+	<select id="getNoticeList" resultType="BoardDto">
+		select boardId, memberId, title, hit, createdDate
+		from board
+		where boardListId = 3
+		order by boardId desc;
+	</select>
+
+	<select id="getNotice" parameterType="int" resultType="BoardDto">
+		select boardId, memberId, title, content, hit, createdDate
+		from board
+		where boardListId = 3 and boardId = #{boardId}
+	</select>
+	
+	<update id="hitNotice" parameterType="int">
+		update board
+		set hit = hit + 1
+		where boardId = #{boardId};
+	</update>
+	
+	<delete id="deleteNotice" parameterType="int">
+		delete from board
+		where boardId = #{boardId}
+	</delete>
+	
+	<insert id="writeNotice" parameterType="BoardDto">
+		insert into board (memberId, title, content, hit, boardListId)
+		values (#{memberId}, #{title}, #{content}, #{hit}, #{boardListId})
+	</insert>	
+	
+</mapper>
