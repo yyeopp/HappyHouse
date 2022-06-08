@@ -1,8 +1,9 @@
 # HappyHouse 후기
 
 ---
+## 소개
 
-## 경과
+**SSAFY 7기 Java 전공 트랙 1학기 최종 프로젝트**
 
 ### 개발기간
 
@@ -16,15 +17,15 @@ JavaScript, Vue.js, Vue CLI, Vuex
 
 ### 역할
 
-2인 1팀
+2인 1팀 (with github.com/yangksks)
 
 기능을 기준으로 역할을 분담하여 제작 (둘다 풀스택 담당)
 
 ### 성과
 
-SSAFY 7기 전공 Java 트랙
+- SSAFY 7기 서울 10반 최우수 프로젝트
 
-전국 20개 반, 약 200개 팀 중 1위 프로젝트 선정
+- SSAFY 7기 Java 전공 트랙 전국 20개 반, 약 200개 팀 중 1위 프로젝트 선정
 
 ---
 
