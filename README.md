@@ -27,6 +27,10 @@ JavaScript, Vue.js, Vue CLI, Vuex
 
 - SSAFY 7기 Java 전공 트랙 전국 20개 반, 약 200개 팀 중 1위 프로젝트 선정
 
+### 기능구현
+
+**함께 게시된 최종ppt와 UCC에서 확인해주세요.**
+
 ---
 
 ## 소회
